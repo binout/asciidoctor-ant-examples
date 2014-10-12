@@ -1,0 +1,36 @@
+<project xmlns:asciidoctor="antlib:org.asciidoctor.ant">
+	<property name="maven.central" value="http://repo1.maven.org/maven2/"/>
+	<property name="asciidoctor-version" value="1.5.0"/>
+
+    <target name="asciidoctor-def">
+        <get src="${maven.central}/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
+             dest="lib/asciidoctor-ant-${asciidoctor-version}.jar" usetimestamp="true"/>
+        <taskdef uri="antlib:org.asciidoctor.ant" resource="org/asciidoctor/ant/antlib.xml" classpath="lib/asciidoctor-ant-${asciidoctor-version}.jar"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="target"/>
+    </target>
+
+    <target name="docbook" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target"/>
+    </target>
+
+    <target name="html5" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target" backend="html5"/>
+    </target>
+
+    <target name="attribute" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target" backend="html5">
+            <attribute key="title" value="Asciidoc Ant"/>
+            <attribute key="toc" value="left"/>
+        </asciidoctor:convert>
+    </target>
+
+    <target name="resource" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target">
+            <resource dir="src/asciidoc/images" includes="*.jpg"/>
+        </asciidoctor:convert>
+    </target>
+
+</project>

@@ -1,0 +1,57 @@
+= asciidoctor-ant-examples
+
+A collection of example projects that demonstrates how to use the Asciidoctor Ant Task
+
+== Installation
+
+[source, xml]
+----
+    <target name="asciidoctor-def">
+        <get src="${maven.central}/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
+             dest="lib/asciidoctor-ant-${asciidoctor-version}.jar" usetimestamp="true"/>
+        <taskdef uri="antlib:org.asciidoctor.ant" resource="org/asciidoctor/ant/antlib.xml" classpath="lib/asciidoctor-ant-${asciidoctor-version}.jar"/>
+    </target>
+----
+
+== Examples
+
+=== docbook
+
+[source, xml]
+----
+    <target name="docbook" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target"/>
+    </target>
+----
+
+=== html5
+
+[source, xml]
+----
+    <target name="html5" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target" backend="html5"/>
+    </target>
+----
+
+=== attribute
+
+[source, xml]
+----
+    <target name="attribute" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target" backend="html5">
+            <attribute key="title" value="Asciidoc Ant"/>
+            <attribute key="toc" value="left"/>
+        </asciidoctor:convert>
+    </target>
+----
+
+=== resource
+
+[source, xml]
+----
+    <target name="resource" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target">
+            <resource dir="src/asciidoc/images" includes="*.jpg"/>
+        </asciidoctor:convert>
+    </target>
+----
