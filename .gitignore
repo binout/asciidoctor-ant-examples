@@ -3,3 +3,5 @@ lib/
 *.iml
 .idea
 .DS_Store
+*diag-*png
+*diag-*png.cache

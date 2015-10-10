@@ -55,3 +55,26 @@ A collection of example projects that demonstrates how to use the Asciidoctor An
         </asciidoctor:convert>
     </target>
 ----
+
+=== extension
+
+[source, xml]
+----
+    <target name="twitter" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="twitter.adoc" outputDirectory="${basedir}/target" backend="html5">
+            <inlineMacroProcessor blockName="twitter" className="com.github.binout.asciidoctor.extensions.TwitterMacro"/>
+        </asciidoctor:convert>
+    </target>
+----
+
+=== diagram
+
+[source, xml]
+----
+    <target name="diagram" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="diagram.adoc" outputDirectory="${basedir}/target" backend="html5" gemPaths="${basedir}/gems-provided">
+            <require name="asciidoctor-diagram"/>
+            <resource dir="${basedir}/src/asciidoc/images" includes="*.png"/>
+        </asciidoctor:convert>
+    </target>
+----

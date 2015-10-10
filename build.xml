@@ -1,35 +1,59 @@
 <project xmlns:asciidoctor="antlib:org.asciidoctor.ant">
 	<property name="maven.central" value="http://repo1.maven.org/maven2/"/>
-	<property name="asciidoctor-version" value="1.5.0"/>
+	<property name="asciidoctor-version" value="1.5.2"/>
+
+    <path id="asciidoctor.path">
+      <pathelement location="${basedir}/lib/asciidoctor-ant-${asciidoctor-version}.jar"/>
+      <pathelement location="${basedir}/lib/extensions.jar"/>
+    </path>
 
     <target name="asciidoctor-def">
-        <get src="${maven.central}/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
-             dest="lib/asciidoctor-ant-${asciidoctor-version}.jar" usetimestamp="true"/>
-        <taskdef uri="antlib:org.asciidoctor.ant" resource="org/asciidoctor/ant/antlib.xml" classpath="lib/asciidoctor-ant-${asciidoctor-version}.jar"/>
+        <!--<get src="${maven.central}/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
+             dest="lib/asciidoctor-ant-${asciidoctor-version}.jar" usetimestamp="true"/>-->
+        <taskdef uri="antlib:org.asciidoctor.ant" resource="org/asciidoctor/ant/antlib.xml" classpathref="asciidoctor.path"/>
     </target>
 
     <target name="clean">
         <delete dir="target"/>
+            <delete dir="build"/>
+        <delete dir="dist"/>
     </target>
 
     <target name="docbook" depends="asciidoctor-def,clean">
-        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target"/>
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="test.adoc" outputDirectory="${basedir}/target"/>
     </target>
 
     <target name="html5" depends="asciidoctor-def,clean">
-        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target" backend="html5"/>
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="test.adoc" outputDirectory="${basedir}/target" backend="html5"/>
+    </target>
+
+    <target name="pdf" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="test.adoc" outputDirectory="${basedir}/target" backend="pdf"/>
     </target>
 
     <target name="attribute" depends="asciidoctor-def,clean">
-        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target" backend="html5">
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="test.adoc" outputDirectory="${basedir}/target" backend="html5">
             <attribute key="title" value="Asciidoc Ant"/>
             <attribute key="toc" value="left"/>
         </asciidoctor:convert>
     </target>
 
     <target name="resource" depends="asciidoctor-def,clean">
-        <asciidoctor:convert sourceDirectory="src/asciidoc" outputDirectory="target">
-            <resource dir="src/asciidoc/images" includes="*.jpg"/>
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="test.adoc" outputDirectory="${basedir}/target">
+            <resource dir="${basedir}/src/asciidoc/images" includes="*.jpg"/>
+        </asciidoctor:convert>
+    </target>
+    
+    <target name="twitter" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="twitter.adoc" outputDirectory="${basedir}/target" backend="html5">
+            <inlineMacroProcessor blockName="twitter" className="com.github.binout.asciidoctor.extensions.TwitterMacro"/>
+        </asciidoctor:convert>
+    </target>
+    
+    <target name="diagram" depends="asciidoctor-def,clean">
+        <asciidoctor:convert sourceDirectory="${basedir}/src/asciidoc" sourceDocumentName="diagram.adoc" outputDirectory="${basedir}/target" backend="html5" gemPaths="${basedir}/gems-provided">
+            <require name="asciidoctor-diagram"/>
+            <resource dir="${basedir}/src/asciidoc/images" includes="*.png"/>
         </asciidoctor:convert>
     </target>
 
