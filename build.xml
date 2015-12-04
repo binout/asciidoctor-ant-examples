@@ -1,15 +1,19 @@
 <project xmlns:asciidoctor="antlib:org.asciidoctor.ant">
 	<property name="maven.central" value="http://repo1.maven.org/maven2/"/>
-	<property name="asciidoctor-version" value="1.5.2"/>
+    <property name="asciidoctor-version" value="1.5.2"/>
+    <property name="bintray" value="http://dl.bintray.com/binout/maven/"/>
+    <property name="asciidoctor-extensions-version" value="0.2"/>
 
     <path id="asciidoctor.path">
       <pathelement location="${basedir}/lib/asciidoctor-ant-${asciidoctor-version}.jar"/>
-      <pathelement location="${basedir}/lib/extensions.jar"/>
+      <pathelement location="${basedir}/lib/asciidoctor-extensions.jar"/>
     </path>
 
     <target name="asciidoctor-def">
-        <!--<get src="${maven.central}/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
-             dest="lib/asciidoctor-ant-${asciidoctor-version}.jar" usetimestamp="true"/>-->
+        <get src="${bintray}/io/github/binout/asciidoctor/asciidoctor-extensions/${asciidoctor-extensions-version}/asciidoctor-extensions-${asciidoctor-extensions-version}.jar"
+        dest="lib/asciidoctor-extensions.jar" usetimestamp="true"/>
+        <get src="${maven.central}/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
+             dest="lib/asciidoctor-ant-${asciidoctor-version}.jar" usetimestamp="true"/>
         <taskdef uri="antlib:org.asciidoctor.ant" resource="org/asciidoctor/ant/antlib.xml" classpathref="asciidoctor.path"/>
     </target>
 
